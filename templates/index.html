@@ -17,56 +17,6 @@
     color: white;
 }
 
-.title {
-    font-size: 2rem;
-    font-weight: bold;
-
-    grid-row: 1/2;
-    grid-column: 1 / -1;
-    justify-self: center;
-
-    margin-bottom: 30px;
-}
-
-.form-container {
-    grid-row: 2/-1;
-    grid-column: 1 / -1;
-
-    display: grid;
-    grid-template: repeat(3, 1fr) / repeat(5, 1fr);
-}
-
-.name {
-    grid-row: 1 / 2;
-    grid-column: 1/-1;
-    justify-self: center;
-}
-
-.day {
-    grid-row: 2/3;
-    grid-column: 1/2;
-}
-
-.month {
-    grid-row: 2/3;
-    grid-column: 3/4;
-}
-
-.year {
-    grid-row: 2/3;
-    grid-column: 5/6
-}
-
-.submit-button{
-    grid-row: 3/4;
-    grid-column: 3/4;
-
-    justify-self: center;
-
-    width: 70%;
-    height: 70%;
-}
-
 /* Background circles start */
 .circle {
     position: absolute;
@@ -118,6 +68,89 @@
     animation-direction: alternate;
 }
 
+
+.card {
+    position: absolute;
+    height: 60vh;
+    width: 50vw;
+
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(30px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 80px rgba(0, 0, 0, 0.25);
+    padding: 30px 30px 30px 30px;
+    overflow: hidden;
+
+    display: grid;
+    grid-template: repeat(10, 1fr) / repeat(5, 1fr);
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+
+    grid-row: 1/2;
+    grid-column: 1 / -1;
+    justify-self: center;
+
+    margin-bottom: 30px;
+}
+
+.form-container {
+    grid-row: 2/span 4;
+    grid-column: 1 / -1;
+
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(5, 1fr);
+}
+
+.name {
+    grid-row: 1 / 2;
+    grid-column: 1/-1;
+    justify-self: center;
+}
+
+.day {
+    grid-row: 2/3;
+    grid-column: 1/2;
+}
+
+.month {
+    grid-row: 2/3;
+    grid-column: 3/4;
+}
+
+.year {
+    grid-row: 2/3;
+    grid-column: 5/6
+}
+
+.submit-button{
+    grid-row: 3/4;
+    grid-column: 3/4;
+
+    justify-self: center;
+
+    width: 50%;
+    height: 50%;
+}
+
+.description-box {
+    grid-column: 1/-1;
+    grid-row: 6/-1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.luckynum {
+    font-size: 20px;
+    font-style: bold;
+}
+
 /* Background circles end */
 
 /* ANIMATIONS */
@@ -160,22 +193,6 @@
 
 }
 
-.card {
-    position: absolute;
-    height: 30vh;
-    width: 50vw;
-
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(30px);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 80px rgba(0, 0, 0, 0.25);
-    padding: 30px 30px 30px 30px;
-    overflow: hidden;
-
-    display: grid;
-    grid-template: repeat(5, 1fr) / repeat(5, 1fr);
-}
 
 input[type=number] {
     width: 80px;
@@ -291,7 +308,6 @@ input:hover {
         <div class="circle circle-2"></div>
       </div>
       <div class="card">
-        {% if description is none%}
         <span class="title">Find Your Lucky Number</span>
         <form method="POST" class="form-container">
             <div class="name">
@@ -313,12 +329,13 @@ input:hover {
 
             <button class="submit-button" type="submit">Calculate</button>
         </form>
-        {% endif %}
         {% if description %}
-        <p>{{ description }}</p>
-        <p>{{ cultural_practices }}</p>
-        <h2>{{ translations.lucky_number_text }}</h2>
-        <p>{{ translations.good_day_message }}</p>
+        <div class="description-box">
+            <p class="lucky-desc">Your lucky number is <span class="luckynum">{{lucky_number}}</span>. {{ description }}</p>
+            <p class="cultural-desc">{{ cultural_practices }}</p>
+            <h2 class="goodday-message">{{ translations.lucky_number_text }}</h2>
+            <p class="goodday-message-telugu">{{ translations.good_day_message }}</p>
+        </div>
         {% endif %}
         </div>
         </div>

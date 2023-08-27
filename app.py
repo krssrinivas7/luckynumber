@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
@@ -15,15 +15,15 @@ def calculate_lucky_number(birth_date):
 
 def get_lucky_number_description(lucky_number):
     descriptions = {
-        1: "Your lucky number is 1. This number is often associated with leadership, independence, and determination.",
-        2: "Your lucky number is 2. This number is associated with balance, harmony, and cooperation.",
-        3: "Your lucky number is 3. This number is known for creativity, expression, and social interactions.",
-        4: "Your lucky number is 4. This number is associated with stability, hard work, and practicality.",
-        5: "Your lucky number is 5. This number is known for adventure, freedom, and change.",
-        6: "Your lucky number is 6. This number is associated with nurturing, family, and harmony.",
-        7: "Your lucky number is 7. This number is known for spirituality, intuition, and introspection.",
-        8: "Your lucky number is 8. This number is associated with success, abundance, and material achievements.",
-        9: "Your lucky number is 9. This number is known for compassion, healing, and spiritual growth.",
+        1: "This number is often associated with leadership, independence, and determination.",
+        2: "This number is associated with balance, harmony, and cooperation.",
+        3: "This number is known for creativity, expression, and social interactions.",
+        4: "This number is associated with stability, hard work, and practicality.",
+        5: "This number is known for adventure, freedom, and change.",
+        6: "This number is associated with nurturing, family, and harmony.",
+        7: "This number is known for spirituality, intuition, and introspection.",
+        8: "This number is associated with success, abundance, and material achievements.",
+        9: "This number is known for compassion, healing, and spiritual growth.",
     }
 
     return descriptions.get(lucky_number, "Your lucky number is not defined.")
