@@ -93,3 +93,25 @@ else
 fi
 
 echo "Setup completed successfully."
+
+# Install kubectl if not already installed
+echo "Checking and installing kubectl..."
+if ! command_exists kubectl; then
+  # Download the latest version of kubectl
+  echo "Downloading kubectl..."
+  sudo apt-get update && sudo apt-get install -y apt-transport-https gnupg2
+  curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+  echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+  sudo apt-get update
+  sudo apt-get install -y kubectl
+
+  # Verify kubectl installation
+  if [ $(kubectl version --client --short | grep -c "Client Version") -gt 0 ]; then
+    echo "kubectl installed successfully. Version: $(kubectl version --client --short)"
+  else
+    echo "Failed to install kubectl."
+    exit 1
+  fi
+else
+  echo "kubectl is already installed. Version: $(kubectl version --client --short)"
+fi
