@@ -47,16 +47,16 @@ pipeline {
             steps {
                 script {
                     sshagent(['srinivas']) {
-                        dir('EKS-Terraform') {
-                            sh """
-                                ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 export AWS_ACCESS_KEY_ID="${params.AWS_ACCESS_KEY_ID}"
-                                ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 export AWS_SECRET_ACCESS_KEY="${params.AWS_SECRET_ACCESS_KEY}"
-                                ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 terraform init
-                                ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 terraform validate
-                                ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 terraform plan
-                                ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 terraform apply -auto-approve
-                            """
-                        }
+                        sh """
+                            ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 cd /home/ubuntu/luckynumber/EKS-Terraform/
+                            ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 export AWS_ACCESS_KEY_ID="${params.AWS_ACCESS_KEY_ID}"
+                            ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 export AWS_SECRET_ACCESS_KEY="${params.AWS_SECRET_ACCESS_KEY}"
+                            ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 terraform init
+                            ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 terraform validate
+                            ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 terraform plan
+                            ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 terraform apply -auto-approve
+                            sh 'ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 cd ../'
+                        """
                     }
                 }
             }
@@ -80,8 +80,13 @@ pipeline {
             steps {
                 script {
                     sshagent(['srinivas']) {
-                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 sudo chmod 666 /var/run/docker.sock'
-                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 docker build -t krssrinivas/luckynumber:${env.BUILD_NUMBER} .'
+                        sh """
+                            ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 '
+                            cd luckynumber/ &&
+                            sudo chmod 666 /var/run/docker.sock &&
+                            docker build -t krssrinivas/luckynumber:${env.BUILD_NUMBER} .
+                        '
+                       """
                     }
                 }
             }
