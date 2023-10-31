@@ -22,6 +22,7 @@ pipeline {
             steps {
                 sshagent(['srinivas']) {
                     script {
+                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 sudo su'
                         sh 'ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 rm -rf luckynumber || true'       
                         sh 'ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 git clone -b main https://github.com/krssrinivas7/luckynumber.git'
                     }
@@ -33,9 +34,10 @@ pipeline {
             steps {
                 script {
                     sshagent(['srinivas']) {
-                        dir('luckynumber') {
-                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 sh install.sh'
-                        }
+                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 cd luckynumber/'
+                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 chmod +x /home/ubuntu/luckynumber/install.sh'
+                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 /home/ubuntu/luckynumber/install.sh'
+                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 cd ../'
                     }
                 }
             }

@@ -106,12 +106,12 @@ if ! command_exists kubectl; then
   sudo apt-get install -y kubectl
 
   # Verify kubectl installation
-  if [ $(kubectl version --client --short | grep -c "Client Version") -gt 0 ]; then
-    echo "kubectl installed successfully. Version: $(kubectl version --client --short)"
+  if [ $(kubectl version --client | grep -c "Client Version") -gt 0 ]; then
+    echo "kubectl installed successfully. Version: $(kubectl version --client)"
   else
     echo "Failed to install kubectl."
     exit 1
   fi
 else
-  echo "kubectl is already installed. Version: $(kubectl version --client --short)"
+  echo "kubectl is already installed. Version: $(kubectl version --client)"
 fi
