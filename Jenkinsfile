@@ -2,17 +2,17 @@ pipeline {
     agent any
 
     parameters {
-    string(name: 'AWS_ACCESS_KEY_ID', description: 'AWS Access Key ID', defaultValue: 'AKIAXBK4CP5HFBQGPRFU', trim: true)
-    string(name: 'AWS_SECRET_ACCESS_KEY', description: 'AWS Secret Access Key', defaultValue: '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', trim: true)
+    string(name: 'AWS_ACCESS_KEY_ID', description: 'AWS Access Key ID', defaultValue: 'key', trim: true)
+    string(name: 'AWS_SECRET_ACCESS_KEY', description: 'AWS Secret Access Key', defaultValue: 'password', trim: true)
     }
 
     stages {
-        stage('AWS Login') {
+        stage('SSH Agent Check') {
             steps {
                 script {
                     withAWS(credentials: 'AWS-Srinivas', region: 'us-east-1') {
                         sshagent(['srinivas']) {
-                            sh 'ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 aws --version'
+                            sh 'ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 git --version'
                        }
                     }
                 }
@@ -22,6 +22,7 @@ pipeline {
             steps {
                 sshagent(['srinivas']) {
                     script {
+                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 rm -rf luckynumber || true'       
                         sh 'ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 git clone -b main https://github.com/krssrinivas7/luckynumber.git'
                     }
                 }
@@ -32,7 +33,9 @@ pipeline {
             steps {
                 script {
                     sshagent(['srinivas']) {
-                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 ./install.sh'
+                        dir('luckynumber') {
+                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@107.20.123.209 sh install.sh'
+                        }
                     }
                 }
             }
